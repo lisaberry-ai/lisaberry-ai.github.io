@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acid-Base Titration Curve &amp; Henderson-Hasselbalch Explorer — Chem 1A</title>
+  <style>
+    /* ==========================================================================
+       DESIGN TOKENS & ACADEMIC SCIENTIFIC PALETTE
+       ========================================================================== */
+    :root {
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-equation: #f8fafc;
+      --border-light: #e2e8f0;
+      --border-medium: #cbd5e1;
+
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+
+      --primary: #1a5276;
+      --primary-hover: #154360;
+      --primary-soft: #ebf3f9;
+
+      --teal: #0e7490;
+      --teal-soft: #ecfeff;
+
+      --amber: #d97706;
+      --amber-soft: #fef3c7;
+
+      --purple: #7c3aed;
+      --purple-soft: #f3e8ff;
+
+      --crimson: #e11d48;
+      --crimson-soft: #ffe4e6;
+
+      --emerald: #059669;
+      --emerald-soft: #d1fae5;
+
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    /* ==========================================================================
+       RESET & BASE LAYOUT
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .app-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .app-container {
+        padding: 24px 28px 36px;
+      }
+    }
+
+    /* ==========================================================================
+       HEADER BAR
+       ========================================================================== */
+    .app-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    @media (min-width: 768px) {
+      .app-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 3px 10px;
+      border-radius: 999px;
+      width: fit-content;
+      margin-bottom: 4px;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.015em;
+    }
+
+    @media (min-width: 768px) {
+      .app-title {
+        font-size: 1.55rem;
+      }
+    }
+
+    .app-subtitle {
+      margin: 2px 0 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .reaction-pill {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+
+    @media (min-width: 768px) {
+      .reaction-pill {
+        align-self: center;
+      }
+    }
+
+    /* ==========================================================================
+       MAIN RESPONSIVE TWO-COLUMN GRID
+       ========================================================================== */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (min-width: 1040px) {
+      .main-grid {
+        grid-template-columns: minmax(360px, 420px) 1fr;
+      }
+    }
+
+    .column-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ==========================================================================
+       CARDS & SECTION HEADINGS
+       ========================================================================== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+    }
+
+    /* ==========================================================================
+       TITRATION MODE SEGMENTED TOGGLE
+       ========================================================================== */
+    .mode-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: var(--bg-subtle);
+      padding: 5px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      margin-bottom: 16px;
+    }
+
+    .mode-btn {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 10px 8px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      text-align: center;
+      line-height: 1.25;
+      min-height: 44px;
+    }
+
+    .mode-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .mode-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(26, 82, 118, 0.25);
+    }
+
+    .mode-btn small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.72rem;
+      opacity: 0.88;
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       QUICK PRESET BUTTONS
+       ========================================================================== */
+    .section-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .preset-btn {
+      appearance: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 9px 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .preset-btn.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: inset 0 0 0 1px var(--primary);
+    }
+
+    .preset-name {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: block;
+    }
+
+    .preset-meta {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* ==========================================================================
+       SLIDER CONTROLS
+       ========================================================================== */
+    .control-group {
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .control-group:last-of-type {
+      border-bottom: none;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+    }
+
+    .control-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .control-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .value-badge {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+    }
+
+    .sub-readouts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+    }
+
+    .sub-chip {
+      background: var(--bg-subtle);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--border-light);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #cbd5e1;
+      outline: none;
+      cursor: pointer;
+      margin: 6px 0;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35);
+      cursor: pointer;
+      transition: transform 0.12s ease, background-color 0.12s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      background: var(--primary-hover);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35);
+      cursor: pointer;
+      transition: transform 0.12s ease, background-color 0.12s ease;
+    }
+
+    .slider-bounds {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Quick Snap Volume Pills */
+    .snap-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .snap-btn {
+      appearance: none;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-sm);
+      padding: 6px 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.14s ease;
+      min-height: 36px;
+    }
+
+    .snap-btn:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Checkbox Overlay Control */
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 11px 12px;
+      cursor: pointer;
+      user-select: none;
+      margin-top: 8px;
+      min-height: 46px;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--crimson);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .checkbox-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .checkbox-text span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================================================
+       SVG CHART CONTAINER & LEGEND
+       ========================================================================== */
+    .chart-card {
+      padding: 16px 18px 18px;
+    }
+
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-bottom: 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .legend-line {
+      width: 20px;
+      height: 3px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .legend-line.exact {
+      background: var(--primary);
+    }
+
+    .legend-line.hh {
+      background: repeating-linear-gradient(
+        to right,
+        var(--crimson) 0,
+        var(--crimson) 5px,
+        transparent 5px,
+        transparent 9px
+      );
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 12px;
+      border-radius: 3px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      display: inline-block;
+    }
+
+    .svg-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      touch-action: none; /* Enables smooth dragging on touch screens without page scroll */
+    }
+
+    #titrationSvg {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: crosshair;
+      user-select: none;
+    }
+
+    .chart-hint {
+      margin: 8px 0 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       LIVE EQUILIBRIUM & HENDERSON-HASSELBALCH INSPECTOR
+       ========================================================================== */
+    .region-banner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 14px;
+      border: 1px solid transparent;
+    }
+
+    .region-banner.region-initial {
+      background: var(--primary-soft);
+      border-color: rgba(26, 82, 118, 0.25);
+      color: var(--primary);
+    }
+
+    .region-banner.region-buffer {
+      background: var(--emerald-soft);
+      border-color: rgba(5, 150, 105, 0.28);
+      color: #065f46;
+    }
+
+    .region-banner.region-half {
+      background: var(--purple-soft);
+      border-color: rgba(124, 58, 237, 0.28);
+      color: #5b21b6;
+    }
+
+    .region-banner.region-breakdown {
+      background: var(--crimson-soft);
+      border-color: rgba(225, 29, 72, 0.28);
+      color: #9f1239;
+    }
+
+    .region-banner.region-eq {
+      background: var(--amber-soft);
+      border-color: rgba(217, 119, 6, 0.32);
+      color: #92400e;
+    }
+
+    .region-banner.region-excess {
+      background: var(--teal-soft);
+      border-color: rgba(14, 116, 144, 0.28);
+      color: #155e75;
+    }
+
+    .region-title {
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .region-vol {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    /* Key Metrics 4-Card Row */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 600px) {
+      .metrics-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .metric-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+    }
+
+    .metric-box.highlight {
+      background: var(--primary-soft);
+      border-color: rgba(26, 82, 118, 0.25);
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: block;
+    }
+
+    .metric-box.highlight .metric-value {
+      color: var(--primary);
+    }
+
+    .metric-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Species Fraction Stacked Bar */
+    .species-section {
+      margin-bottom: 16px;
+    }
+
+    .species-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .acid-label {
+      color: var(--primary);
+    }
+
+    .base-label {
+      color: var(--teal);
+    }
+
+    .fraction-bar {
+      width: 100%;
+      height: 16px;
+      background: var(--teal);
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.15);
+      margin-bottom: 10px;
+    }
+
+    .fraction-acid {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.08s linear;
+    }
+
+    .conc-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    @media (min-width: 600px) {
+      .conc-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .conc-item {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 7px 9px;
+    }
+
+    .conc-name {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: block;
+    }
+
+    .conc-val {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Dynamic Step-by-Step Equation Card */
+    .equation-panel {
+      background: var(--bg-equation);
+      border: 1px solid var(--border-medium);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 13px 15px;
+    }
+
+    .eq-heading {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+      margin: 0 0 6px;
+    }
+
+    .eq-formula {
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      overflow-x: auto;
+    }
+
+    .eq-steps {
+      font-family: var(--font-mono);
+      font-size: 0.81rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin: 0 0 8px;
+    }
+
+    .eq-note {
+      font-size: 0.81rem;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div>
+        <div class="eyebrow">Chemistry 1A • Acid-Base Equilibria</div>
+        <h1 class="app-title">Acid-Base Titration Curve &amp; Henderson-Hasselbalch Explorer</h1>
+        <p class="app-subtitle">Compare exact charge-balance equilibrium calculations with the Henderson-Hasselbalch buffer approximation.</p>
+      </div>
+      <div class="reaction-pill" id="reactionEquation">
+        HA(aq) + OH⁻(aq) → A⁻(aq) + H₂O(l)
+      </div>
+    </header>
+
+    <!-- MAIN TWO-COLUMN GRID -->
+    <main class="main-grid">
+      <!-- LEFT COLUMN: CONTROLS -->
+      <section class="column-stack" aria-label="Titration Parameters">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Titration Setup &amp; Parameters</h2>
+            <span class="card-badge">V₀ = 25.0 mL</span>
+          </div>
+
+          <!-- Titration Mode Toggle -->
+          <span class="section-label">1. Titration Mode</span>
+          <div class="mode-toggle" role="group" aria-label="Titration Mode">
+            <button type="button" class="mode-btn active" id="modeAcidBtn" data-mode="weak-acid">
+              Weak Acid + Strong Base
+              <small>HA titrated with NaOH</small>
+            </button>
+            <button type="button" class="mode-btn" id="modeBaseBtn" data-mode="weak-base">
+              Weak Base + Strong Acid
+              <small>B titrated with HCl</small>
+            </button>
+          </div>
+
+          <!-- Quick Presets -->
+          <span class="section-label">2. Quick Chemical Presets</span>
+          <div class="preset-grid" id="presetGrid">
+            <button type="button" class="preset-btn" data-preset="formic">
+              <span class="preset-name">Formic Acid</span>
+              <span class="preset-meta">pKₐ = 3.75 (Weak Acid)</span>
+            </button>
+            <button type="button" class="preset-btn active" data-preset="acetic">
+              <span class="preset-name">Acetic Acid</span>
+              <span class="preset-meta">pKₐ = 4.76 (Default)</span>
+            </button>
+            <button type="button" class="preset-btn" data-preset="hypochlorous">
+              <span class="preset-name">Hypochlorous Acid</span>
+              <span class="preset-meta">pKₐ = 7.54 (Weak Acid)</span>
+            </button>
+            <button type="button" class="preset-btn" data-preset="ammonia">
+              <span class="preset-name">Ammonia / NH₄⁺</span>
+              <span class="preset-meta">pKₐ = 9.25 (Weak Base)</span>
+            </button>
+          </div>
+
+          <!-- Sliders -->
+          <span class="section-label">3. Equilibrium &amp; Concentration Controls</span>
+
+          <!-- Slider 1: pKa -->
+          <div class="control-group">
+            <div class="control-top">
+              <label class="control-label" for="pkaSlider" id="pkaLabel">
+                Acid Dissociation Constant (pKₐ)
+              </label>
+              <span class="value-badge" id="pkaBadge">4.76</span>
+            </div>
+            <input type="range" id="pkaSlider" min="2.00" max="11.00" step="0.05" value="4.76" />
+            <div class="slider-bounds">
+              <span>2.00 (Stronger)</span>
+              <span>11.00 (Weaker)</span>
+            </div>
+            <div class="sub-readouts">
+              <span class="sub-chip" id="kaReadout">Kₐ = 1.74 × 10⁻⁵</span>
+              <span class="sub-chip" id="pkbReadout">pKᵦ = 9.24</span>
+            </div>
+          </div>
+
+          <!-- Slider 2: Initial Analyte Concentration -->
+          <div class="control-group">
+            <div class="control-top">
+              <label class="control-label" for="analyteConcSlider" id="analyteConcLabel">
+                Initial Acid Concentration [HA]₀
+              </label>
+              <span class="value-badge" id="analyteConcBadge">0.100 M</span>
+            </div>
+            <input type="range" id="analyteConcSlider" min="0.010" max="0.500" step="0.005" value="0.100" />
+            <div class="slider-bounds">
+              <span>0.010 M</span>
+              <span>25.0 mL analyte</span>
+              <span>0.500 M</span>
+            </div>
+          </div>
+
+          <!-- Slider 3: Titrant Concentration -->
+          <div class="control-group">
+            <div class="control-top">
+              <label class="control-label" for="titrantConcSlider" id="titrantConcLabel">
+                Titrant Concentration [NaOH]
+              </label>
+              <span class="value-badge" id="titrantConcBadge">0.100 M</span>
+            </div>
+            <input type="range" id="titrantConcSlider" min="0.010" max="0.500" step="0.005" value="0.100" />
+            <div class="slider-bounds">
+              <span>0.010 M</span>
+              <span>0.500 M</span>
+            </div>
+          </div>
+
+          <!-- Slider 4: Titrant Volume Added Scrubber -->
+          <div class="control-group">
+            <div class="control-top">
+              <label class="control-label" for="volumeSlider" id="volumeLabel">
+                Titrant Volume Added (V<sub>NaOH</sub>)
+              </label>
+              <span class="value-badge" id="volumeBadge">12.50 mL</span>
+            </div>
+            <input type="range" id="volumeSlider" min="0" max="41.25" step="0.05" value="12.50" />
+            <div class="slider-bounds">
+              <span>0.0 mL</span>
+              <span id="volMaxLabel">41.3 mL</span>
+            </div>
+            <div class="snap-row" aria-label="Jump to key titration landmarks">
+              <button type="button" class="snap-btn" data-snap="initial">Initial (0)</button>
+              <button type="button" class="snap-btn" data-snap="half">½ V<sub>eq</sub></button>
+              <button type="button" class="snap-btn" data-snap="eq">V<sub>eq</sub></button>
+              <button type="button" class="snap-btn" data-snap="excess">1.4 × V<sub>eq</sub></button>
+            </div>
+          </div>
+
+          <!-- Henderson-Hasselbalch Overlay Checkbox -->
+          <label class="checkbox-row" for="hhToggle">
+            <input type="checkbox" id="hhToggle" checked />
+            <span class="checkbox-text">
+              Overlay Henderson-Hasselbalch Approximation Curve
+              <span>Shows dashed H-H curve across 0 &lt; V &lt; V<sub>eq</sub> to highlight breakdown near endpoints</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN: CHART + LIVE EQUILIBRIUM INSPECTOR -->
+      <section class="column-stack" aria-label="Titration Curve and Equilibrium Inspector">
+        <!-- Interactive SVG Chart Card -->
+        <div class="card chart-card">
+          <div class="card-header">
+            <h2 class="card-title">Titration Curve (pH vs. Volume Added)</h2>
+            <span class="card-badge" id="chartSummaryBadge">V<sub>eq</sub> = 25.00 mL</span>
+          </div>
+
+          <div class="chart-legend" aria-label="Chart Legend">
+            <span class="legend-item"><span class="legend-line exact"></span> Exact Charge-Balance pH</span>
+            <span class="legend-item" id="hhLegendItem"><span class="legend-line hh"></span> Henderson-Hasselbalch Approx.</span>
+            <span class="legend-item"><span class="legend-swatch"></span> Buffer Zone (pKₐ ± 1)</span>
+            <span class="legend-item"><span class="legend-dot" style="background: var(--purple);"></span> Half-Eq (½V<sub>eq</sub>)</span>
+            <span class="legend-item"><span class="legend-dot" style="background: var(--amber);"></span> Equivalence (V<sub>eq</sub>)</span>
+          </div>
+
+          <div class="svg-wrapper" id="svgWrapper">
+            <svg id="titrationSvg" viewBox="0 0 760 450" role="img" aria-label="Interactive acid-base titration curve plotting pH on the vertical axis against volume of titrant added in milliliters on the horizontal axis"></svg>
+          </div>
+          <p class="chart-hint">Click or drag anywhere along the curve to inspect species concentrations and equations at that volume.</p>
+        </div>
+
+        <!-- Live Equilibrium & Henderson-Hasselbalch Inspector Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Live Equilibrium &amp; Henderson-Hasselbalch Inspector</h2>
+            <span class="card-badge" id="pctTitratedBadge">50.0% Titrated</span>
+          </div>
+
+          <!-- Dynamic Region Banner -->
+          <div class="region-banner region-half" id="regionBanner">
+            <span class="region-title" id="regionTitle">Half-Equivalence Point (Maximum Buffer Capacity)</span>
+            <span class="region-vol" id="regionVol">V = 12.50 mL / 25.00 mL</span>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="metrics-grid">
+            <div class="metric-box highlight">
+              <span class="metric-label">Exact pH</span>
+              <span class="metric-value" id="exactPhVal">4.76</span>
+              <span class="metric-sub" id="exactPohSub">pOH = 9.24</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">H-H Approx pH</span>
+              <span class="metric-value" id="hhPhVal">4.76</span>
+              <span class="metric-sub" id="hhDiffSub">ΔpH = 0.00</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Equivalence V<sub>eq</sub></span>
+              <span class="metric-value" id="veqVal">25.00 mL</span>
+              <span class="metric-sub" id="pheqSub">pH<sub>eq</sub> = 8.72</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-label">Half-Eq V<sub>1/2</sub></span>
+              <span class="metric-value" id="vhalfVal">12.50 mL</span>
+              <span class="metric-sub" id="phhalfSub">pH<sub>1/2</sub> = 4.76</span>
+            </div>
+          </div>
+
+          <!-- Live Species Distribution Bar & Molarities -->
+          <div class="species-section">
+            <div class="species-header">
+              <span class="acid-label" id="acidPctLabel">Acid Form [HA]: 50.0%</span>
+              <span class="base-label" id="basePctLabel">Conjugate Base [A⁻]: 50.0%</span>
+            </div>
+            <div class="fraction-bar" role="img" aria-label="Relative fraction of acid and conjugate base species">
+              <div class="fraction-acid" id="fractionAcidBar" style="width: 50%;"></div>
+            </div>
+            <div class="conc-grid">
+              <div class="conc-item">
+                <span class="conc-name" id="concAcidName">[HA] eq</span>
+                <span class="conc-val" id="concAcidVal">3.33 × 10⁻² M</span>
+              </div>
+              <div class="conc-item">
+                <span class="conc-name" id="concBaseName">[A⁻] eq</span>
+                <span class="conc-val" id="concBaseVal">3.33 × 10⁻² M</span>
+              </div>
+              <div class="conc-item">
+                <span class="conc-name">[H₃O⁺]</span>
+                <span class="conc-val" id="concHVal">1.74 × 10⁻⁵ M</span>
+              </div>
+              <div class="conc-item">
+                <span class="conc-name">[OH⁻]</span>
+                <span class="conc-val" id="concOhVal">5.76 × 10⁻¹⁰ M</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Step-by-Step Equation Display -->
+          <div class="equation-panel">
+            <h3 class="eq-heading" id="eqHeading">Henderson-Hasselbalch Equation (Half-Equivalence)</h3>
+            <div class="eq-formula" id="eqFormula">pH = pKₐ + log₁₀([A⁻] / [HA])</div>
+            <p class="eq-steps" id="eqSteps"></p>
+            <p class="eq-note" id="eqNote"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    /**
+     * ============================================================================
+     * CHEMISTRY 1A TITRATION & EQUILIBRIUM ENGINE
+     * Exact Charge-Balance Bisection Solver + Henderson-Hasselbalch Model
+     * ============================================================================
+     */
+    (function () {
+      "use strict";
+
+      // Physical constants at 25 °C
+      const KW = 1.0e-14;
+      const V0 = 25.0; // Fixed initial analyte volume in mL
+
+      // Chemical presets for quick student exploration
+      const PRESETS = {
+        formic: {
+          mode: "weak-acid",
+          pKa: 3.75,
+          analyteConc: 0.100,
+          titrantConc: 0.100
+        },
+        acetic: {
+          mode: "weak-acid",
+          pKa: 4.76,
+          analyteConc: 0.100,
+          titrantConc: 0.100
+        },
+        hypochlorous: {
+          mode: "weak-acid",
+          pKa: 7.54,
+          analyteConc: 0.100,
+          titrantConc: 0.100
+        },
+        ammonia: {
+          mode: "weak-base",
+          pKa: 9.25, // Conjugate acid NH4+ pKa = 9.25 (NH3 pKb = 4.75)
+          analyteConc: 0.100,
+          titrantConc: 0.100
+        }
+      };
+
+      // Application state
+      const state = {
+        mode: "weak-acid",    // "weak-acid" | "weak-base"
+        pKa: 4.76,            // Acid dissociation constant of HA or BH+
+        analyteConc: 0.100,   // [HA]0 or [B]0 in M
+        titrantConc: 0.100,   // [NaOH] or [HCl] in M
+        vTitrant: 12.50,      // Volume of titrant added in mL
+        showHH: true          // Overlay Henderson-Hasselbalch dashed curve
+      };
+
+      // Cached DOM references
+      const dom = {
+        reactionEquation: document.getElementById("reactionEquation"),
+        modeAcidBtn: document.getElementById("modeAcidBtn"),
+        modeBaseBtn: document.getElementById("modeBaseBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn"),
+
+        pkaLabel: document.getElementById("pkaLabel"),
+        pkaSlider: document.getElementById("pkaSlider"),
+        pkaBadge: document.getElementById("pkaBadge"),
+        kaReadout: document.getElementById("kaReadout"),
+        pkbReadout: document.getElementById("pkbReadout"),
+
+        analyteConcLabel: document.getElementById("analyteConcLabel"),
+        analyteConcSlider: document.getElementById("analyteConcSlider"),
+        analyteConcBadge: document.getElementById("analyteConcBadge"),
+
+        titrantConcLabel: document.getElementById("titrantConcLabel"),
+        titrantConcSlider: document.getElementById("titrantConcSlider"),
+        titrantConcBadge: document.getElementById("titrantConcBadge"),
+
+        volumeLabel: document.getElementById("volumeLabel"),
+        volumeSlider: document.getElementById("volumeSlider"),
+        volumeBadge: document.getElementById("volumeBadge"),
+        volMaxLabel: document.getElementById("volMaxLabel"),
+        snapButtons: document.querySelectorAll(".snap-btn"),
+
+        hhToggle: document.getElementById("hhToggle"),
+        hhLegendItem: document.getElementById("hhLegendItem"),
+
+        chartSummaryBadge: document.getElementById("chartSummaryBadge"),
+        svgWrapper: document.getElementById("svgWrapper"),
+        svg: document.getElementById("titrationSvg"),
+
+        pctTitratedBadge: document.getElementById("pctTitratedBadge"),
+        regionBanner: document.getElementById("regionBanner"),
+        regionTitle: document.getElementById("regionTitle"),
+        regionVol: document.getElementById("regionVol"),
+
+        exactPhVal: document.getElementById("exactPhVal"),
+        exactPohSub: document.getElementById("exactPohSub"),
+        hhPhVal: document.getElementById("hhPhVal"),
+        hhDiffSub: document.getElementById("hhDiffSub"),
+        veqVal: document.getElementById("veqVal"),
+        pheqSub: document.getElementById("pheqSub"),
+        vhalfVal: document.getElementById("vhalfVal"),
+        phhalfSub: document.getElementById("phhalfSub"),
+
+        acidPctLabel: document.getElementById("acidPctLabel"),
+        basePctLabel: document.getElementById("basePctLabel"),
+        fractionAcidBar: document.getElementById("fractionAcidBar"),
+
+        concAcidName: document.getElementById("concAcidName"),
+        concAcidVal: document.getElementById("concAcidVal"),
+        concBaseName: document.getElementById("concBaseName"),
+        concBaseVal: document.getElementById("concBaseVal"),
+        concHVal: document.getElementById("concHVal"),
+        concOhVal: document.getElementById("concOhVal"),
+
+        eqHeading: document.getElementById("eqHeading"),
+        eqFormula: document.getElementById("eqFormula"),
+        eqSteps: document.getElementById("eqSteps"),
+        eqNote: document.getElementById("eqNote")
+      };
+
+      /**
+       * Formats a positive number into clean HTML scientific notation (e.g., 1.74 × 10⁻⁵)
+       */
+      function formatSciHTML(num) {
+        if (!isFinite(num) || num <= 0) return "0.00";
+        if (num >= 0.01 && num < 1000) {
+          return num.toPrecision(3);
+        }
+        const exp = Math.floor(Math.log10(num));
+        const mantissa = num / Math.pow(10, exp);
+        return `${mantissa.toFixed(2)} × 10<sup>${exp}</sup>`;
+      }
+
+      /**
+       * Plain text scientific notation for SVG labels if needed
+       */
+      function formatSciPlain(num) {
+        if (!isFinite(num) || num <= 0) return "0.00";
+        if (num >= 0.01 && num < 1000) return num.toPrecision(3);
+        return num.toExponential(2);
+      }
+
+      /**
+       * Computes equivalence volume V_eq (mL) and x-axis max volume V_max (mL).
+       * Setting V_max = 1.65 * V_eq places V_eq cleanly at ~60.6% across the x-axis.
+       */
+      function getVolumeMetrics() {
+        const vEq = (state.analyteConc * V0) / state.titrantConc;
+        const vHalf = 0.5 * vEq;
+        const vMax = 1.65 * vEq;
+        return { vEq, vHalf, vMax };
+      }
+
+      /**
+       * Exact 60-step bisection solver for pH in [-1, 15] using full charge balance.
+       *
+       * Weak Acid (HA, Va, Ca) + Strong Base (Cb, Vb):
+       *   f(pH) = h + Cb' - Kw/h - Ca' * Ka / (h + Ka) = 0
+       *
+       * Weak Base (B, Vb, Cb) + Strong Acid (Ca, Va):
+       *   f(pH) = h + Cb' * h / (h + Ka) - Kw/h - Ca' = 0
+       */
+      function solveExactEquilibrium(vTit) {
+        const Ka = Math.pow(10, -state.pKa);
+        const vTotal = V0 + vTit;
+
+        let lo = -1.0;
+        let hi = 15.0;
+
+        if (state.mode === "weak-acid") {
+          const CaPrime = (state.analyteConc * V0) / vTotal;
+          const CbPrime = (state.titrantConc * vTit) / vTotal;
+
+          for (let i = 0; i < 60; i++) {
+            const mid = 0.5 * (lo + hi);
+            const h = Math.pow(10, -mid);
+            const f = h + CbPrime - (KW / h) - (CaPrime * Ka) / (h + Ka);
+            if (f > 0) {
+              lo = mid;
+            } else {
+              hi = mid;
+            }
+          }
+
+          const pH = 0.5 * (lo + hi);
+          const h = Math.pow(10, -pH);
+          const oh = KW / h;
+          const alphaAcid = h / (h + Ka);
+          const alphaBase = Ka / (h + Ka);
+          const concAcid = CaPrime * alphaAcid; // [HA]
+          const concBase = CaPrime * alphaBase; // [A-]
+
+          return {
+            pH,
+            pOH: 14.0 - pH,
+            h,
+            oh,
+            concAcid,
+            concBase,
+            alphaAcid,
+            alphaBase,
+            CaPrime,
+            CbPrime,
+            vTotal
+          };
+        } else {
+          // Weak base B (V0, Cb) titrated with Strong acid (vTit, Ca)
+          const CbPrime = (state.analyteConc * V0) / vTotal;
+          const CaPrime = (state.titrantConc * vTit) / vTotal;
+
+          for (let i = 0; i < 60; i++) {
+            const mid = 0.5 * (lo + hi);
+            const h = Math.pow(10, -mid);
+            const f = h + (CbPrime * h) / (h + Ka) - (KW / h) - CaPrime;
+            if (f > 0) {
+              lo = mid;
+            } else {
+              hi = mid;
+            }
+          }
+
+          const pH = 0.5 * (lo + hi);
+          const h = Math.pow(10, -pH);
+          const oh = KW / h;
+          const alphaAcid = h / (h + Ka);       // Fraction BH+
+          const alphaBase = Ka / (h + Ka);      // Fraction B
+          const concAcid = CbPrime * alphaAcid; // [BH+]
+          const concBase = CbPrime * alphaBase; // [B]
+
+          return {
+            pH,
+            pOH: 14.0 - pH,
+            h,
+            oh,
+            concAcid,
+            concBase,
+            alphaAcid,
+            alphaBase,
+            CaPrime,
+            CbPrime,
+            vTotal
+          };
+        }
+      }
+
+      /**
+       * Computes Henderson-Hasselbalch pH for 0 < vTit < vEq.
+       * Returns null outside the open interval (0, vEq).
+       */
+      function computeHHpH(vTit, vEq) {
+        if (vTit <= 1e-6 || vTit >= vEq - 1e-6) {
+          return null;
+        }
+        if (state.mode === "weak-acid") {
+          return state.pKa + Math.log10(vTit / (vEq - vTit));
+        } else {
+          return state.pKa + Math.log10((vEq - vTit) / vTit);
+        }
+      }
+
+      /**
+       * Chooses clean human-friendly x-axis tick step for any vMax
+       */
+      function getNiceTickStep(vMax) {
+        const roughStep = vMax / 6;
+        const candidates = [0.2, 0.5, 1, 2, 2.5, 5, 10, 15, 20, 25, 50, 100, 150, 200, 250];
+        for (let i = 0; i < candidates.length; i++) {
+          if (candidates[i] >= roughStep) return candidates[i];
+        }
+        return Math.ceil(roughStep / 50) * 50;
+      }
+
+      /**
+       * Renders the high-resolution interactive SVG Titration Curve
+       */
+      function renderChart(metrics, currentEq, initEq, halfEq, eqPoint) {
+        const { vEq, vHalf, vMax } = metrics;
+        const W = 760;
+        const H = 450;
+        const pad = { top: 26, right: 34, bottom: 52, left: 58 };
+        const plotW = W - pad.left - pad.right;
+        const plotH = H - pad.top - pad.bottom;
+
+        const xScale = (v) => pad.left + (v / vMax) * plotW;
+        const yScale = (ph) => pad.top + ((14 - Math.max(0, Math.min(14, ph))) / 14) * plotH;
+
+        let svgParts = [];
+
+        // Defs for clipping paths so H-H curve never spills outside plot frame
+        svgParts.push(`
+          <defs>
+            <clipPath id="plotClip">
+              <rect x="${pad.left}" y="${pad.top}" width="${plotW}" height="${plotH}" />
+            </clipPath>
+          </defs>
+        `);
+
+        // Plot background
+        svgParts.push(`<rect x="${pad.left}" y="${pad.top}" width="${plotW}" height="${plotH}" fill="#ffffff" />`);
+
+        // Shaded Buffer Zone (pKa - 1 to pKa + 1)
+        const bufTopPH = Math.min(14, state.pKa + 1);
+        const bufBotPH = Math.max(0, state.pKa - 1);
+        if (bufTopPH > bufBotPH) {
+          const yTop = yScale(bufTopPH);
+          const yBot = yScale(bufBotPH);
+          svgParts.push(`
+            <rect x="${pad.left}" y="${yTop.toFixed(1)}" width="${plotW}" height="${(yBot - yTop).toFixed(1)}"
+                  fill="rgba(124, 58, 237, 0.085)" />
+            <text x="${pad.left + plotW - 10}" y="${(yTop + 15).toFixed(1)}"
+                  text-anchor="end" font-size="11" font-weight="600" fill="#6d28d9" opacity="0.85">
+              Buffer Zone (pKₐ ± 1: ${bufBotPH.toFixed(2)}–${bufTopPH.toFixed(2)})
+            </text>
+          `);
+        }
+
+        // Horizontal Y-axis gridlines (pH 0 to 14 every 2 units)
+        for (let ph = 0; ph <= 14; ph += 2) {
+          const y = yScale(ph);
+          svgParts.push(`
+            <line x1="${pad.left}" y1="${y.toFixed(1)}" x2="${pad.left + plotW}" y2="${y.toFixed(1)}"
+                  stroke="#e2e8f0" stroke-width="1" />
+            <text x="${pad.left - 10}" y="${(y + 4).toFixed(1)}"
+                  text-anchor="end" font-size="12" font-family="ui-monospace, monospace" fill="#475569">
+              ${ph}
+            </text>
+          `);
+        }
+
+        // Neutral pH = 7.00 reference line
+        const yNeutral = yScale(7.0);
+        svgParts.push(`
+          <line x1="${pad.left}" y1="${yNeutral.toFixed(1)}" x2="${pad.left + plotW}" y2="${yNeutral.toFixed(1)}"
+                stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,4" />
+          <text x="${pad.left + 8}" y="${(yNeutral - 5).toFixed(1)}"
+                font-size="10.5" font-weight="600" fill="#64748b">
+            pH 7.00 (Neutral)
+          </text>
+        `);
+
+        // Vertical X-axis gridlines
+        const tickStep = getNiceTickStep(vMax);
+        for (let v = 0; v <= vMax + 1e-6; v += tickStep) {
+          const x = xScale(v);
+          const label = tickStep < 1 ? v.toFixed(1) : Math.round(v).toString();
+          svgParts.push(`
+            <line x1="${x.toFixed(1)}" y1="${pad.top}" x2="${x.toFixed(1)}" y2="${pad.top + plotH}"
+                  stroke="#f1f5f9" stroke-width="1" />
+            <text x="${x.toFixed(1)}" y="${pad.top + plotH + 20}"
+                  text-anchor="middle" font-size="12" font-family="ui-monospace, monospace" fill="#475569">
+              ${label}
+            </text>
+          `);
+        }
+
+        // Vertical guide lines at Half-Equivalence and Equivalence
+        const xHalf = xScale(vHalf);
+        const xEq = xScale(vEq);
+        svgParts.push(`
+          <line x1="${xHalf.toFixed(1)}" y1="${pad.top}" x2="${xHalf.toFixed(1)}" y2="${pad.top + plotH}"
+                stroke="rgba(124, 58, 237, 0.35)" stroke-width="1.2" stroke-dasharray="3,3" />
+          <line x1="${xEq.toFixed(1)}" y1="${pad.top}" x2="${xEq.toFixed(1)}" y2="${pad.top + plotH}"
+                stroke="rgba(217, 119, 6, 0.45)" stroke-width="1.3" stroke-dasharray="4,3" />
+        `);
+
+        // Build dense adaptive volume array for smooth exact curve
+        const sampleSet = new Set([0, vHalf, vEq, vMax]);
+        const baseSteps = 220;
+        for (let i = 0; i <= baseSteps; i++) {
+          sampleSet.add((i / baseSteps) * vMax);
+        }
+        // Extra resolution near V = 0 (initial steep drop/rise)
+        for (let i = 1; i <= 35; i++) {
+          sampleSet.add((i / 35) * 0.06 * vEq);
+        }
+        // Extra resolution around V = V_eq (vertical inflection zone)
+        for (let i = -45; i <= 45; i++) {
+          const vNearEq = vEq + (i / 45) * 0.08 * vEq;
+          if (vNearEq >= 0 && vNearEq <= vMax) sampleSet.add(vNearEq);
+        }
+
+        const sortedVols = Array.from(sampleSet).sort((a, b) => a - b);
+        let exactPath = "";
+        for (let i = 0; i < sortedVols.length; i++) {
+          const v = sortedVols[i];
+          const ph = solveExactEquilibrium(v).pH;
+          const x = xScale(v).toFixed(2);
+          const y = yScale(ph).toFixed(2);
+          exactPath += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
+        }
+
+        // Render Exact Titration Curve
+        svgParts.push(`
+          <path d="${exactPath}" fill="none" stroke="#1a5276" stroke-width="3.2"
+                stroke-linecap="round" stroke-linejoin="round" clip-path="url(#plotClip)" />
+        `);
+
+        // Render Henderson-Hasselbalch Overlay Curve (0 < V < V_eq)
+        if (state.showHH) {
+          let hhPath = "";
+          const hhSteps = 200;
+          let started = false;
+          for (let i = 1; i < hhSteps; i++) {
+            // Non-linear spacing to capture asymptotic tails near 0 and V_eq cleanly
+            const u = i / hhSteps;
+            const v = vEq * (0.002 + 0.996 * u);
+            const phHH = computeHHpH(v, vEq);
+            if (phHH !== null && phHH >= -1 && phHH <= 15) {
+              const x = xScale(v).toFixed(2);
+              const y = yScale(phHH).toFixed(2);
+              hhPath += (!started ? `M ${x} ${y}` : ` L ${x} ${y}`);
+              started = true;
+            }
+          }
+          svgParts.push(`
+            <path d="${hhPath}" fill="none" stroke="#e11d48" stroke-width="2.3"
+                  stroke-dasharray="7,5" stroke-linecap="round" clip-path="url(#plotClip)" />
+          `);
+        }
+
+        // Plot border frame
+        svgParts.push(`
+          <rect x="${pad.left}" y="${pad.top}" width="${plotW}" height="${plotH}"
+                fill="none" stroke="#94a3b8" stroke-width="1.3" />
+        `);
+
+        // Key Landmark Markers:
+        // 1. Initial Point (V = 0)
+        const x0 = xScale(0);
+        const y0 = yScale(initEq.pH);
+        svgParts.push(`
+          <circle cx="${x0.toFixed(1)}" cy="${y0.toFixed(1)}" r="5" fill="#1a5276" stroke="#ffffff" stroke-width="1.8" />
+          <text x="${(x0 + 9).toFixed(1)}" y="${(y0 + (state.mode === "weak-acid" ? -8 : 15)).toFixed(1)}"
+                font-size="11" font-weight="700" fill="#1a5276">
+            Initial (${initEq.pH.toFixed(2)})
+          </text>
+        `);
+
+        // 2. Half-Equivalence Point (V = 0.5 * V_eq)
+        const yHalf = yScale(halfEq.pH);
+        svgParts.push(`
+          <circle cx="${xHalf.toFixed(1)}" cy="${yHalf.toFixed(1)}" r="5.5" fill="#7c3aed" stroke="#ffffff" stroke-width="1.8" />
+          <g transform="translate(${(xHalf - 6).toFixed(1)}, ${(yHalf + (state.mode === "weak-acid" ? 20 : -12)).toFixed(1)})">
+            <text text-anchor="end" font-size="11" font-weight="700" fill="#6d28d9">
+              ½Veq (${halfEq.pH.toFixed(2)})
+            </text>
+          </g>
+        `);
+
+        // 3. Equivalence Point (V = V_eq)
+        const yEq = yScale(eqPoint.pH);
+        svgParts.push(`
+          <circle cx="${xEq.toFixed(1)}" cy="${yEq.toFixed(1)}" r="6" fill="#d97706" stroke="#ffffff" stroke-width="2" />
+          <text x="${(xEq + 10).toFixed(1)}" y="${(yEq + 4).toFixed(1)}"
+                font-size="11.5" font-weight="700" fill="#b45309">
+            Eq. Pt (${eqPoint.pH.toFixed(2)})
+          </text>
+        `);
+
+        // Interactive Cursor Crosshairs & Inspection Dot
+        const xCur = xScale(state.vTitrant);
+        const yCur = yScale(currentEq.pH);
+        svgParts.push(`
+          <line x1="${xCur.toFixed(1)}" y1="${pad.top}" x2="${xCur.toFixed(1)}" y2="${pad.top + plotH}"
+                stroke="#0f172a" stroke-width="1.1" stroke-dasharray="2,2" opacity="0.55" />
+          <line x1="${pad.left}" y1="${yCur.toFixed(1)}" x2="${pad.left + plotW}" y2="${yCur.toFixed(1)}"
+                stroke="#0f172a" stroke-width="1.1" stroke-dasharray="2,2" opacity="0.55" />
+          <circle cx="${xCur.toFixed(1)}" cy="${yCur.toFixed(1)}" r="8.5"
+                  fill="rgba(26, 82, 118, 0.2)" />
+          <circle cx="${xCur.toFixed(1)}" cy="${yCur.toFixed(1)}" r="5.5"
+                  fill="#0f172a" stroke="#ffffff" stroke-width="2" />
+        `);
+
+        // Floating Callout Pill near cursor (auto-flips to stay inside plot bounds)
+        const pillW = 132;
+        const pillH = 38;
+        let pillX = xCur + 12;
+        if (pillX + pillW > pad.left + plotW - 6) {
+          pillX = xCur - pillW - 12;
+        }
+        let pillY = yCur - pillH - 10;
+        if (pillY < pad.top + 6) {
+          pillY = yCur + 12;
+        }
+        svgParts.push(`
+          <g transform="translate(${pillX.toFixed(1)}, ${pillY.toFixed(1)})">
+            <rect width="${pillW}" height="${pillH}" rx="7" fill="#0f172a" opacity="0.92" />
+            <text x="10" y="15" font-size="11" font-family="ui-monospace, monospace" fill="#cbd5e1">
+              V = ${state.vTitrant.toFixed(2)} mL
+            </text>
+            <text x="10" y="30" font-size="12" font-weight="700" font-family="ui-monospace, monospace" fill="#ffffff">
+              pH = ${currentEq.pH.toFixed(2)}
+            </text>
+          </g>
+        `);
+
+        // Axis Titles
+        const xAxisLabel = state.mode === "weak-acid"
+          ? "Volume of Strong Base Titrant Added, V_NaOH (mL)"
+          : "Volume of Strong Acid Titrant Added, V_HCl (mL)";
+
+        svgParts.push(`
+          <text x="${(pad.left + plotW / 2).toFixed(1)}" y="${H - 12}"
+                text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">
+            ${xAxisLabel}
+          </text>
+          <text x="18" y="${(pad.top + plotH / 2).toFixed(1)}"
+                text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b"
+                transform="rotate(-90, 18, ${(pad.top + plotH / 2).toFixed(1)})">
+            Solution pH
+          </text>
+        `);
+
+        dom.svg.innerHTML = svgParts.join("");
+      }
+
+      /**
+       * Updates the Live Equilibrium & Henderson-Hasselbalch Inspector Panel
+       */
+      function updateInspector(metrics, currentEq, initEq, halfEq, eqPoint) {
+        const { vEq, vHalf } = metrics;
+        const v = state.vTitrant;
+        const ratioToEq = v / vEq;
+        const pctTitrated = ratioToEq * 100;
+
+        dom.pctTitratedBadge.textContent = `${pctTitrated.toFixed(1)}% Titrated`;
+        dom.regionVol.textContent = `V = ${v.toFixed(2)} mL / ${vEq.toFixed(2)} mL`;
+
+        // Key metrics boxes
+        dom.exactPhVal.textContent = currentEq.pH.toFixed(2);
+        dom.exactPohSub.textContent = `pOH = ${currentEq.pOH.toFixed(2)}`;
+
+        const hhPH = computeHHpH(v, vEq);
+        if (hhPH !== null) {
+          dom.hhPhVal.textContent = hhPH.toFixed(2);
+          const diff = hhPH - currentEq.pH;
+          const sign = diff >= 0 ? "+" : "";
+          dom.hhDiffSub.textContent = `ΔpH = ${sign}${diff.toFixed(2)}`;
+        } else {
+          dom.hhPhVal.textContent = "N/A";
+          dom.hhDiffSub.textContent = v <= 1e-6 ? "At V = 0 mL" : "At / Past V_eq";
+        }
+
+        dom.veqVal.textContent = `${vEq.toFixed(2)} mL`;
+        dom.pheqSub.innerHTML = `pH<sub>eq</sub> = ${eqPoint.pH.toFixed(2)}`;
+
+        dom.vhalfVal.textContent = `${vHalf.toFixed(2)} mL`;
+        dom.phhalfSub.innerHTML = `pH<sub>1/2</sub> = ${halfEq.pH.toFixed(2)}`;
+
+        // Species fraction stacked bar & molarities
+        const pctAcid = (currentEq.alphaAcid * 100).toFixed(1);
+        const pctBase = (currentEq.alphaBase * 100).toFixed(1);
+        dom.fractionAcidBar.style.width = `${Math.max(0, Math.min(100, currentEq.alphaAcid * 100))}%`;
+
+        if (state.mode === "weak-acid") {
+          dom.acidPctLabel.textContent = `Acid Form [HA]: ${pctAcid}%`;
+          dom.basePctLabel.textContent = `Conjugate Base [A⁻]: ${pctBase}%`;
+          dom.concAcidName.textContent = "[HA] eq";
+          dom.concBaseName.textContent = "[A⁻] eq";
+        } else {
+          dom.acidPctLabel.textContent = `Conjugate Acid [BH⁺]: ${pctAcid}%`;
+          dom.basePctLabel.textContent = `Base Form [B]: ${pctBase}%`;
+          dom.concAcidName.textContent = "[BH⁺] eq";
+          dom.concBaseName.textContent = "[B] eq";
+        }
+
+        dom.concAcidVal.innerHTML = `${formatSciHTML(currentEq.concAcid)} M`;
+        dom.concBaseVal.innerHTML = `${formatSciHTML(currentEq.concBase)} M`;
+        dom.concHVal.innerHTML = `${formatSciHTML(currentEq.h)} M`;
+        dom.concOhVal.innerHTML = `${formatSciHTML(currentEq.oh)} M`;
+
+        // Determine Titration Regime & Populate Dynamic Equation Display
+        const isAcid = state.mode === "weak-acid";
+        const Ka = Math.pow(10, -state.pKa);
+        const Kb = KW / Ka;
+
+        let regionClass = "region-buffer";
+        let regionText = "";
+        let eqTitle = "";
+        let eqFormula = "";
+        let eqSteps = "";
+        let eqNote = "";
+
+        if (v <= 1e-4) {
+          // 1. Initial Point (V = 0)
+          regionClass = "region-initial";
+          if (isAcid) {
+            regionText = "Initial Weak Acid Equilibrium (No Titrant Added)";
+            eqTitle = "Weak Acid Ionization Equilibrium (ICE Table)";
+            eqFormula = "HA(aq) + H₂O(l) ⇌ H₃O⁺(aq) + A⁻(aq)   |   Kₐ = [H₃O⁺][A⁻] / [HA]";
+            eqSteps = `Kₐ = 10^(-${state.pKa.toFixed(2)}) = ${formatSciHTML(Ka)},  [HA]₀ = ${state.analyteConc.toFixed(3)} M<br>` +
+                      `Solving exact equilibrium: [H₃O⁺] = ${formatSciHTML(currentEq.h)} M → <strong>pH = ${currentEq.pH.toFixed(2)}</strong>`;
+            eqNote = "Henderson-Hasselbalch does not apply at V = 0 because no conjugate base A⁻ has been formed by titration yet.";
+          } else {
+            regionText = "Initial Weak Base Equilibrium (No Titrant Added)";
+            eqTitle = "Weak Base Ionization Equilibrium (ICE Table)";
+            eqFormula = "B(aq) + H₂O(l) ⇌ BH⁺(aq) + OH⁻(aq)   |   Kᵦ = [BH⁺][OH⁻] / [B]";
+            eqSteps = `Kᵦ = K_w / Kₐ = ${formatSciHTML(Kb)},  [B]₀ = ${state.analyteConc.toFixed(3)} M<br>` +
+                      `Solving exact equilibrium: [OH⁻] = ${formatSciHTML(currentEq.oh)} M → pOH = ${currentEq.pOH.toFixed(2)} → <strong>pH = ${currentEq.pH.toFixed(2)}</strong>`;
+            eqNote = "Henderson-Hasselbalch does not apply at V = 0 because no conjugate acid BH⁺ has been generated by titration yet.";
+          }
+        } else if (Math.abs(v - vHalf) <= 0.015 * vEq) {
+          // 2. Half-Equivalence Point
+          regionClass = "region-half";
+          regionText = "Half-Equivalence Point (Maximum Buffer Capacity)";
+          eqTitle = "Henderson-Hasselbalch at Half-Equivalence (V = ½ V_eq)";
+          eqFormula = isAcid
+            ? "pH = pKₐ + log₁₀([A⁻] / [HA]) ≈ pKₐ + log₁₀(1) = pKₐ"
+            : "pH = pKₐ + log₁₀([B] / [BH⁺]) ≈ pKₐ + log₁₀(1) = pKₐ";
+          const ratioStr = isAcid
+            ? `${formatSciHTML(currentEq.concBase)} / ${formatSciHTML(currentEq.concAcid)}`
+            : `${formatSciHTML(currentEq.concBase)} / ${formatSciHTML(currentEq.concAcid)}`;
+          eqSteps = `pH_HH = ${state.pKa.toFixed(2)} + log₁₀(${v.toFixed(2)} / ${(vEq - v).toFixed(2)}) = <strong>${hhPH.toFixed(2)}</strong><br>` +
+                    `Exact equilibrium ratio: (${ratioStr}) → <strong>Exact pH = ${currentEq.pH.toFixed(2)}</strong>`;
+          eqNote = "At the half-equivalence point, half of the analyte has been converted into its conjugate partner, yielding maximum resistance to pH change.";
+        } else if (v < 0.10 * vEq) {
+          // 3. Pre-Buffer Region (0 < V < 0.10 V_eq)
+          regionClass = "region-breakdown";
+          regionText = "Early Titration Region (H-H Approximating)";
+          eqTitle = "Henderson-Hasselbalch vs. Exact Equilibrium (Low Base/Acid Ratio)";
+          eqFormula = isAcid
+            ? "pH_HH = pKₐ + log₁₀(V_NaOH / (V_eq − V_NaOH))"
+            : "pH_HH = pKₐ + log₁₀((V_eq − V_HCl) / V_HCl)";
+          const numVol = isAcid ? v : (vEq - v);
+          const denVol = isAcid ? (vEq - v) : v;
+          eqSteps = `pH_HH = ${state.pKa.toFixed(2)} + log₁₀(${numVol.toFixed(2)} / ${denVol.toFixed(2)}) = <strong>${hhPH.toFixed(2)}</strong><br>` +
+                    `Exact charge-balance pH = <strong>${currentEq.pH.toFixed(2)}</strong> (Deviation ΔpH = ${(hhPH - currentEq.pH).toFixed(2)})`;
+          eqNote = "Near V = 0, self-ionization of the remaining weak analyte shifts the true [Base]/[Acid] ratio away from the simple stoichiometric ratio assumed by Henderson-Hasselbalch.";
+        } else if (v <= 0.90 * vEq) {
+          // 4. Core Buffer Region (0.10 V_eq <= V <= 0.90 V_eq)
+          regionClass = "region-buffer";
+          regionText = "Buffer Region (Henderson-Hasselbalch Valid)";
+          eqTitle = "Henderson-Hasselbalch Buffer Equation";
+          eqFormula = isAcid
+            ? "pH = pKₐ + log₁₀([A⁻] / [HA]) = pKₐ + log₁₀(V_NaOH / (V_eq − V_NaOH))"
+            : "pH = pKₐ + log₁₀([B] / [BH⁺]) = pKₐ + log₁₀((V_eq − V_HCl) / V_HCl)";
+          const numVol = isAcid ? v : (vEq - v);
+          const denVol = isAcid ? (vEq - v) : v;
+          eqSteps = `pH_HH = ${state.pKa.toFixed(2)} + log₁₀(${numVol.toFixed(2)} mL / ${denVol.toFixed(2)} mL) = <strong>${hhPH.toFixed(2)}</strong><br>` +
+                    `Exact equilibrium pH = <strong>${currentEq.pH.toFixed(2)}</strong> (ΔpH = ${(hhPH - currentEq.pH >= 0 ? "+" : "") + (hhPH - currentEq.pH).toFixed(2)})`;
+          eqNote = "Within 10%–90% titration (and within pKₐ ± 1), both conjugate species are abundant and the Henderson-Hasselbalch approximation closely matches the exact curve.";
+        } else if (v < vEq - 0.008 * vEq) {
+          // 5. Near Equivalence (H-H Breakdown)
+          regionClass = "region-breakdown";
+          regionText = "Approaching Equivalence (H-H Approximation Breaks Down)";
+          eqTitle = "Why Henderson-Hasselbalch Diverges Near V_eq";
+          eqFormula = isAcid
+            ? "pH_HH = pKₐ + log₁₀(V_NaOH / (V_eq − V_NaOH)) → +∞ as V → V_eq"
+            : "pH_HH = pKₐ + log₁₀((V_eq − V_HCl) / V_HCl) → −∞ as V → V_eq";
+          const numVol = isAcid ? v : (vEq - v);
+          const denVol = isAcid ? (vEq - v) : v;
+          eqSteps = `pH_HH = ${state.pKa.toFixed(2)} + log₁₀(${numVol.toFixed(2)} / ${denVol.toFixed(2)}) = <strong>${hhPH.toFixed(2)}</strong><br>` +
+                    `Exact equilibrium pH = <strong>${currentEq.pH.toFixed(2)}</strong> (Error = ${(hhPH - currentEq.pH >= 0 ? "+" : "") + (hhPH - currentEq.pH).toFixed(2)} pH units)`;
+          eqNote = "Near equivalence, the remaining un-titrated analyte becomes tiny and hydrolysis of the conjugate salt dominates, causing Henderson-Hasselbalch to overshoot dramatically.";
+        } else if (Math.abs(v - vEq) <= 0.008 * vEq) {
+          // 6. Equivalence Point
+          regionClass = "region-eq";
+          if (isAcid) {
+            regionText = "Equivalence Point (Conjugate Base Hydrolysis: pH > 7)";
+            eqTitle = "Equivalence Point Salt Hydrolysis (A⁻ + H₂O ⇌ HA + OH⁻)";
+            eqFormula = "[A⁻]_eq = (Cₐ · Vₐ) / (Vₐ + V_eq)   |   Kᵦ = K_w / Kₐ = [HA][OH⁻] / [A⁻]";
+            eqSteps = `[A⁻]_formal = (${state.analyteConc.toFixed(3)} × ${V0.toFixed(1)}) / ${(V0 + vEq).toFixed(2)} = ${currentEq.CaPrime.toFixed(4)} M,  Kᵦ = ${formatSciHTML(Kb)}<br>` +
+                      `[OH⁻] = ${formatSciHTML(currentEq.oh)} M → pOH = ${currentEq.pOH.toFixed(2)} → <strong>pH_eq = ${currentEq.pH.toFixed(2)}</strong>`;
+            eqNote = "Because all weak acid HA has been converted into its weak conjugate base A⁻, the solution at equivalence is basic (pH > 7.00).";
+          } else {
+            regionText = "Equivalence Point (Conjugate Acid Hydrolysis: pH < 7)";
+            eqTitle = "Equivalence Point Salt Hydrolysis (BH⁺ + H₂O ⇌ B + H₃O⁺)";
+            eqFormula = "[BH⁺]_eq = (Cᵦ · Vᵦ) / (Vᵦ + V_eq)   |   Kₐ = [B][H₃O⁺] / [BH⁺]";
+            eqSteps = `[BH⁺]_formal = (${state.analyteConc.toFixed(3)} × ${V0.toFixed(1)}) / ${(V0 + vEq).toFixed(2)} = ${currentEq.CbPrime.toFixed(4)} M,  Kₐ = ${formatSciHTML(Ka)}<br>` +
+                      `[H₃O⁺] = ${formatSciHTML(currentEq.h)} M → <strong>pH_eq = ${currentEq.pH.toFixed(2)}</strong>`;
+            eqNote = "Because all weak base B has been converted into its weak conjugate acid BH⁺, the solution at equivalence is acidic (pH < 7.00).";
+          }
+        } else {
+          // 7. Excess Titrant Region (V > V_eq)
+          regionClass = "region-excess";
+          if (isAcid) {
+            regionText = "Post-Equivalence Region (Excess Strong Base)";
+            eqTitle = "Excess Strong Base Controls pH";
+            eqFormula = "[OH⁻]_excess = (C_NaOH · V_NaOH − Cₐ · Vₐ) / (Vₐ + V_NaOH)";
+            const excessOh = (state.titrantConc * v - state.analyteConc * V0) / (V0 + v);
+            eqSteps = `[OH⁻]_excess = (${state.titrantConc.toFixed(3)} × ${v.toFixed(2)} − ${state.analyteConc.toFixed(3)} × ${V0.toFixed(1)}) / ${(V0 + v).toFixed(2)} = ${formatSciHTML(excessOh)} M<br>` +
+                      `pOH = ${currentEq.pOH.toFixed(2)} → <strong>pH = 14.00 − pOH = ${currentEq.pH.toFixed(2)}</strong>`;
+            eqNote = "Past the equivalence point, excess strong base (OH⁻) suppresses further hydrolysis of A⁻ and directly governs the solution pH.";
+          } else {
+            regionText = "Post-Equivalence Region (Excess Strong Acid)";
+            eqTitle = "Excess Strong Acid Controls pH";
+            eqFormula = "[H₃O⁺]_excess = (C_HCl · V_HCl − Cᵦ · Vᵦ) / (Vᵦ + V_HCl)";
+            const excessH = (state.titrantConc * v - state.analyteConc * V0) / (V0 + v);
+            eqSteps = `[H₃O⁺]_excess = (${state.titrantConc.toFixed(3)} × ${v.toFixed(2)} − ${state.analyteConc.toFixed(3)} × ${V0.toFixed(1)}) / ${(V0 + v).toFixed(2)} = ${formatSciHTML(excessH)} M<br>` +
+                      `<strong>pH = −log₁₀([H₃O⁺]) = ${currentEq.pH.toFixed(2)}</strong>`;
+            eqNote = "Past the equivalence point, excess strong acid (H₃O⁺) suppresses further dissociation of BH⁺ and directly governs the solution pH.";
+          }
+        }
+
+        dom.regionBanner.className = `region-banner ${regionClass}`;
+        dom.regionTitle.textContent = regionText;
+        dom.eqHeading.textContent = eqTitle;
+        dom.eqFormula.textContent = eqFormula;
+        dom.eqSteps.innerHTML = eqSteps;
+        dom.eqNote.textContent = eqNote;
+      }
+
+      /**
+       * Synchronizes all labels, slider bounds, badges, chart, and inspector
+       */
+      function renderAll() {
+        const isAcid = state.mode === "weak-acid";
+        const metrics = getVolumeMetrics();
+
+        // Clamp vTitrant inside [0, vMax]
+        state.vTitrant = Math.max(0, Math.min(metrics.vMax, state.vTitrant));
+
+        // Update mode toggle buttons & header equation
+        dom.modeAcidBtn.classList.toggle("active", isAcid);
+        dom.modeBaseBtn.classList.toggle("active", !isAcid);
+        dom.reactionEquation.textContent = isAcid
+          ? "HA(aq) + OH⁻(aq) → A⁻(aq) + H₂O(l)"
+          : "B(aq) + H₃O⁺(aq) → BH⁺(aq) + H₂O(l)";
+
+        // Update parameter labels
+        dom.pkaLabel.textContent = isAcid
+          ? "Acid Dissociation Constant (pKₐ)"
+          : "Conjugate Acid Constant (pKₐ of BH⁺)";
+        dom.analyteConcLabel.textContent = isAcid
+          ? "Initial Acid Concentration [HA]₀"
+          : "Initial Base Concentration [B]₀";
+        dom.titrantConcLabel.textContent = isAcid
+          ? "Titrant Concentration [NaOH]"
+          : "Titrant Concentration [HCl]";
+        dom.volumeLabel.innerHTML = isAcid
+          ? "Titrant Volume Added (V<sub>NaOH</sub>)"
+          : "Titrant Volume Added (V<sub>HCl</sub>)";
+
+        // Update pKa, Ka, and pKb readouts
+        const Ka = Math.pow(10, -state.pKa);
+        const pKb = 14.0 - state.pKa;
+        dom.pkaSlider.value = state.pKa.toFixed(2);
+        dom.pkaBadge.textContent = state.pKa.toFixed(2);
+        dom.kaReadout.innerHTML = `Kₐ = ${formatSciHTML(Ka)}`;
+        dom.pkbReadout.innerHTML = isAcid
+          ? `pKᵦ = ${pKb.toFixed(2)}`
+          : `pKᵦ = ${pKb.toFixed(2)} (Kᵦ = ${formatSciHTML(KW / Ka)})`;
+
+        // Update concentration readouts
+        dom.analyteConcSlider.value = state.analyteConc.toFixed(3);
+        dom.analyteConcBadge.textContent = `${state.analyteConc.toFixed(3)} M`;
+
+        dom.titrantConcSlider.value = state.titrantConc.toFixed(3);
+        dom.titrantConcBadge.textContent = `${state.titrantConc.toFixed(3)} M`;
+
+        // Update dynamic volume slider range & badge
+        dom.volumeSlider.max = metrics.vMax.toFixed(2);
+        dom.volumeSlider.step = metrics.vMax < 15 ? "0.02" : "0.05";
+        dom.volumeSlider.value = state.vTitrant.toFixed(2);
+        dom.volumeBadge.textContent = `${state.vTitrant.toFixed(2)} mL`;
+        dom.volMaxLabel.textContent = `${metrics.vMax.toFixed(1)} mL`;
+        dom.chartSummaryBadge.innerHTML = `V<sub>eq</sub> = ${metrics.vEq.toFixed(2)} mL`;
+
+        // H-H legend visibility
+        dom.hhLegendItem.style.opacity = state.showHH ? "1" : "0.4";
+
+        // Highlight active preset if state matches
+        dom.presetButtons.forEach((btn) => {
+          const p = PRESETS[btn.dataset.preset];
+          const matches =
+            p &&
+            p.mode === state.mode &&
+            Math.abs(p.pKa - state.pKa) < 0.001 &&
+            Math.abs(p.analyteConc - state.analyteConc) < 0.0005 &&
+            Math.abs(p.titrantConc - state.titrantConc) < 0.0005;
+          btn.classList.toggle("active", Boolean(matches));
+        });
+
+        // Compute key equilibrium points
+        const currentEq = solveExactEquilibrium(state.vTitrant);
+        const initEq = solveExactEquilibrium(0);
+        const halfEq = solveExactEquilibrium(metrics.vHalf);
+        const eqPoint = solveExactEquilibrium(metrics.vEq);
+
+        // Render SVG & Inspector
+        renderChart(metrics, currentEq, initEq, halfEq, eqPoint);
+        updateInspector(metrics, currentEq, initEq, halfEq, eqPoint);
+      }
+
+      /**
+       * Converts mouse or touch clientX coordinates over the SVG into titrant volume (mL)
+       */
+      function scrubFromClientX(clientX) {
+        const rect = dom.svg.getBoundingClientRect();
+        if (!rect.width) return;
+        const padLeft = 58;
+        const padRight = 34;
+        const viewW = 760;
+        const plotW = viewW - padLeft - padRight;
+
+        const svgX = ((clientX - rect.left) / rect.width) * viewW;
+        const fraction = Math.max(0, Math.min(1, (svgX - padLeft) / plotW));
+        const { vMax } = getVolumeMetrics();
+        state.vTitrant = Number((fraction * vMax).toFixed(2));
+        renderAll();
+      }
+
+      /* ========================================================================
+         EVENT LISTENERS (SLIDERS, BUTTONS, MOUSE & TOUCH DRAGGING)
+         ======================================================================== */
+      dom.modeAcidBtn.addEventListener("click", () => {
+        if (state.mode !== "weak-acid") {
+          state.mode = "weak-acid";
+          renderAll();
+        }
+      });
+
+      dom.modeBaseBtn.addEventListener("click", () => {
+        if (state.mode !== "weak-base") {
+          state.mode = "weak-base";
+          renderAll();
+        }
+      });
+
+      dom.presetButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const preset = PRESETS[btn.dataset.preset];
+          if (!preset) return;
+          state.mode = preset.mode;
+          state.pKa = preset.pKa;
+          state.analyteConc = preset.analyteConc;
+          state.titrantConc = preset.titrantConc;
+          const { vHalf } = getVolumeMetrics();
+          state.vTitrant = vHalf; // Start at half-equivalence to highlight buffer point
+          renderAll();
+        });
+      });
+
+      dom.pkaSlider.addEventListener("input", (e) => {
+        state.pKa = parseFloat(e.target.value);
+        renderAll();
+      });
+
+      dom.analyteConcSlider.addEventListener("input", (e) => {
+        const prevMetrics = getVolumeMetrics();
+        const relPos = prevMetrics.vMax > 0 ? state.vTitrant / prevMetrics.vMax : 0.3;
+        state.analyteConc = parseFloat(e.target.value);
+        const nextMetrics = getVolumeMetrics();
+        state.vTitrant = relPos * nextMetrics.vMax;
+        renderAll();
+      });
+
+      dom.titrantConcSlider.addEventListener("input", (e) => {
+        const prevMetrics = getVolumeMetrics();
+        const relPos = prevMetrics.vMax > 0 ? state.vTitrant / prevMetrics.vMax : 0.3;
+        state.titrantConc = parseFloat(e.target.value);
+        const nextMetrics = getVolumeMetrics();
+        state.vTitrant = relPos * nextMetrics.vMax;
+        renderAll();
+      });
+
+      dom.volumeSlider.addEventListener("input", (e) => {
+        state.vTitrant = parseFloat(e.target.value);
+        renderAll();
+      });
+
+      dom.snapButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const { vEq, vHalf } = getVolumeMetrics();
+          const target = btn.dataset.snap;
+          if (target === "initial") state.vTitrant = 0;
+          else if (target === "half") state.vTitrant = vHalf;
+          else if (target === "eq") state.vTitrant = vEq;
+          else if (target === "excess") state.vTitrant = 1.4 * vEq;
+          renderAll();
+        });
+      });
+
+      dom.hhToggle.addEventListener("change", (e) => {
+        state.showHH = e.target.checked;
+        renderAll();
+      });
+
+      // Mouse drag scrubbing on SVG
+      let isDragging = false;
+      dom.svg.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        scrubFromClientX(e.clientX);
+      });
+      window.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        scrubFromClientX(e.clientX);
+      });
+      window.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+
+      // Touch drag scrubbing on SVG
+      dom.svg.addEventListener("touchstart", (e) => {
+        if (e.touches.length > 0) {
+          isDragging = true;
+          scrubFromClientX(e.touches[0].clientX);
+        }
+      }, { passive: true });
+
+      dom.svg.addEventListener("touchmove", (e) => {
+        if (isDragging && e.touches.length > 0) {
+          scrubFromClientX(e.touches[0].clientX);
+        }
+      }, { passive: true });
+
+      window.addEventListener("touchend", () => {
+        isDragging = false;
+      });
+
+      // Initial render on load
+      window.addEventListener("load", renderAll);
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
