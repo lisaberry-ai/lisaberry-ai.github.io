@@ -1,0 +1,320 @@
+{
+  "config": {
+    "id": "chem1a-exam1-branching-prep",
+    "title": "Chemistry 1A Exam 1 Adaptive Diagnostic & Guided Review",
+    "fallbackHeight": 800,
+    "evidence": {
+      "instructions": "Save or print your completed PDF summary and upload it to your Canvas assignment or save it for your exam study notes."
+    },
+    "theme": {
+      "brand": {
+        "primary": "#1A5276"
+      }
+    }
+  },
+  "content": {
+    "flow": "branching",
+    "eyebrow": "Chem 1A Exam Preparation",
+    "intro": "Welcome! This interactive diagnostic adapts to your confidence level. Adept students can complete the fast-track exam challenge in ~10 minutes, while students seeking step-by-step review can explore detailed remedial walkthroughs.",
+    "minutes": 10,
+    "steps": [
+      {
+        "type": "scene",
+        "id": "start",
+        "prompt": "Choose Your Diagnostic Entry Point",
+        "body": "Welcome to the Chem 1A Exam 1 Review. How would you like to structure your practice session today?\n\n- **Fast-Track Challenge**: Jump straight to multi-step exam problems (10 min).\n- **Core Concept Check**: Work through essential stoichiometry, dilution, and empirical formula questions.\n- **Guided Review**: Build confidence step-by-step with formulas and guided examples.",
+        "choices": [
+          {
+            "text": "Fast-Track Challenge: Test me on high-level, multi-step exam problems.",
+            "next": "fast_track_q1",
+            "feedback": "Starting Fast-Track Challenge! Get ready for solution stoichiometry and net ionic calculations."
+          },
+          {
+            "text": "Core Concept Check: Test my core understanding of dilution and formulas.",
+            "next": "core_q1_dilution",
+            "feedback": "Starting Core Concept Check! Let's begin with dilution and solution concentration."
+          },
+          {
+            "text": "Guided Review: Start with structured review of moles and chemical equations.",
+            "next": "review_moles_empirical",
+            "feedback": "Starting Guided Review! We will walk through key concepts step-by-step."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "fast_track_q1",
+        "prompt": "Challenge 1: Solution Stoichiometry & Remaining Ion Concentration",
+        "body": "Suppose 30.9 g of potassium chloride (KCl, molar mass 74.55 g/mol) is dissolved in 350 mL of a 0.400 M aqueous silver nitrate (AgNO3) solution. Assuming AgCl precipitates completely and volume remains 350 mL, what is the final molarity of the chloride anion remaining in solution?",
+        "choices": [
+          {
+            "text": "0.783 M",
+            "next": "fast_track_q2",
+            "feedback": "Correct! Initial Cl- = 0.415 mol; Ag+ = 0.140 mol (limiting). Remaining Cl- = 0.415 - 0.140 = 0.275 mol. Molarity = 0.275 mol / 0.350 L = 0.783 M."
+          },
+          {
+            "text": "0.400 M",
+            "next": "review_solution_stoich",
+            "feedback": "Incorrect. Remember that Ag+ and Cl- react in a 1:1 ratio to form solid AgCl, consuming chloride ions from solution."
+          },
+          {
+            "text": "0 M",
+            "next": "review_limiting_reagent",
+            "feedback": "Incorrect. All Ag+ is consumed, but KCl is in excess, leaving unreacted chloride ions in solution."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "fast_track_q2",
+        "prompt": "Challenge 2: Limiting Reactants & Mass Balance",
+        "body": "In the reaction:\n2 H2S (g) + SO2 (g) -> 3 S (s) + 2 H2O (l)\n\nWhen 7.50 g of H2S (molar mass 34.08 g/mol) reacts with 12.75 g of SO2 (molar mass 64.06 g/mol), what mass of elemental sulfur (S, molar mass 32.06 g/mol) is produced?",
+        "choices": [
+          {
+            "text": "10.6 g of sulfur",
+            "next": "fast_track_q3",
+            "feedback": "Spot on! Moles H2S = 0.220 mol, which produces 0.330 mol S (10.6 g). SO2 could yield 0.597 mol S, making H2S the limiting reactant."
+          },
+          {
+            "text": "6.38 g of sulfur",
+            "next": "review_limiting_reagent",
+            "feedback": "Incorrect. This calculation assumed SO2 was limiting without accounting for the 2:1 stoichiometric ratio in the balanced equation."
+          },
+          {
+            "text": "19.1 g of sulfur",
+            "next": "review_moles_empirical",
+            "feedback": "Incorrect. Remember to convert masses to moles and check stoichiometric ratios rather than adding reactant masses directly."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "fast_track_q3",
+        "prompt": "Challenge 3: Advanced Mass-Loss Stoichiometry",
+        "body": "When M2S3 (s) is heated in air, it converts completely to MO2 (s). A 5.23 g sample of M2S3 shows a decrease in mass of 0.81 g after heating. What is the average atomic mass of element M?",
+        "choices": [
+          {
+            "text": "55.9 g/mol",
+            "next": "ending_mastery",
+            "feedback": "Outstanding! Mass change per mole of M2S3 = 3(32.06 g S) - 4(16.00 g O) = 32.18 g/mol. Moles M2S3 = 0.81 / 32.18 = 0.02517 mol. Molar mass = 5.23 / 0.02517 = 207.8 g/mol -> 2M + 96.18 = 207.8 -> M = 55.9 g/mol (Mn)."
+          },
+          {
+            "text": "27.0 g/mol",
+            "next": "review_advanced_stoich",
+            "feedback": "Incorrect. Make sure to account for both the loss of sulfur atoms and the gain of oxygen atoms per formula unit of M2S3."
+          },
+          {
+            "text": "184 g/mol",
+            "next": "review_advanced_stoich",
+            "feedback": "Incorrect. The 0.81 g loss represents the net difference in mass between sulfur lost and oxygen gained, not the mass of sulfur alone."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "core_q1_dilution",
+        "prompt": "Core Check 1: Molarity & Dilution",
+        "body": "What volume of 18 M sulfuric acid (H2SO4) stock solution must be used to prepare 1.80 L of 0.205 M H2SO4?",
+        "choices": [
+          {
+            "text": "21 mL",
+            "next": "core_q2_empirical",
+            "feedback": "Correct! Using M1 * V1 = M2 * V2: (18 M) * V1 = (0.205 M) * (1.80 L) -> V1 = 0.0205 L = 20.5 mL (rounds to 21 mL)."
+          },
+          {
+            "text": "4.1 mL",
+            "next": "review_molarity_dilution",
+            "feedback": "Incorrect. Did you divide target molarity by stock concentration without multiplying by the target volume?"
+          },
+          {
+            "text": "0.37 mL",
+            "next": "review_molarity_dilution",
+            "feedback": "Incorrect. Rearrange M1 * V1 = M2 * V2 carefully to solve for V1 = (M2 * V2) / M1."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "core_q2_empirical",
+        "prompt": "Core Check 2: Empirical Formula Determination",
+        "body": "A compound contains 49.32% Carbon, 43.84% Oxygen, and 6.85% Hydrogen by mass. What is its empirical formula?",
+        "choices": [
+          {
+            "text": "C3H5O2",
+            "next": "core_q3_titration",
+            "feedback": "Correct! Moles in 100g: C = 4.11, O = 2.74, H = 6.80. Ratio O:C:H = 1 : 1.5 : 2.48 -> multiply by 2 gives C3H5O2."
+          },
+          {
+            "text": "C2HO3",
+            "next": "review_moles_empirical",
+            "feedback": "Incorrect. Remember to convert mass percentages to moles before determining whole-number ratios."
+          },
+          {
+            "text": "C3H3O4",
+            "next": "review_moles_empirical",
+            "feedback": "Incorrect. Check your mole ratio division. Ratios ending in .5 must be multiplied by 2 rather than rounded up."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "core_q3_titration",
+        "prompt": "Core Check 3: Neutralization Stoichiometry",
+        "body": "What volume of 0.25 M nitric acid (HNO3) is required to react completely with 7.4 g of calcium hydroxide [Ca(OH)2, molar mass 74.1 g/mol]?",
+        "choices": [
+          {
+            "text": "800 mL",
+            "next": "ending_solid_foundation",
+            "feedback": "Correct! Moles Ca(OH)2 = 7.4 / 74.1 = 0.10 mol. Reaction requires 2 mol HNO3 per mol Ca(OH)2 -> 0.20 mol HNO3 needed. Volume = 0.20 mol / 0.25 M = 0.80 L = 800 mL."
+          },
+          {
+            "text": "400 mL",
+            "next": "review_solution_stoich",
+            "feedback": "Incorrect. Remember the 2:1 stoichiometry: 2 HNO3 + Ca(OH)2 -> Ca(NO3)2 + 2 H2O."
+          },
+          {
+            "text": "200 mL",
+            "next": "review_solution_stoich",
+            "feedback": "Incorrect. Make sure to convert grams of Ca(OH)2 to moles and multiply by the 2:1 stoichiometric factor."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "review_molarity_dilution",
+        "prompt": "Guided Review: Molarity & Ions in Solution",
+        "body": "Let's review solution concentration fundamentals.\n\n- **Molarity (M)** = moles of solute / liters of solution\n- **Dilution**: $M_1 V_1 = M_2 V_2$\n- **Ion count**: Multiply solution moles by ionic subscript.\n\nPractice Question: How many moles of sulfate ions (SO4 2-) are in a 0.547 L solution of 0.715 M aluminum sulfate [Al2(SO4)3]?",
+        "choices": [
+          {
+            "text": "1.17 mol",
+            "next": "core_q2_empirical",
+            "feedback": "Great job! Moles Al2(SO4)3 = 0.547 L * 0.715 M = 0.391 mol. Since each formula unit yields 3 SO4 2- ions: 0.391 * 3 = 1.17 mol."
+          },
+          {
+            "text": "0.391 mol",
+            "next": "review_solution_stoich",
+            "feedback": "Close, but 0.391 is the moles of Al2(SO4)3 compound. Don't forget that each unit contains 3 sulfate ions!"
+          },
+          {
+            "text": "0.0391 mol",
+            "next": "review_molarity_dilution",
+            "feedback": "Check your decimal places: 0.547 L * 0.715 M = 0.391 mol of compound."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "review_moles_empirical",
+        "prompt": "Guided Review: Mass Percent & Subscript Scaling",
+        "body": "Let's review working with mass composition.\n\n- Mass percent remains constant regardless of total sample mass.\n- **Mass %** = (Mass of Element / Total Sample Mass) * 100%\n\nPractice Question: A compound contains 23.0 g sodium (Na), 27.0 g aluminum (Al), and 114 g fluorine (F). How many grams of sodium are in a 196-g sample of this compound?",
+        "choices": [
+          {
+            "text": "27.5 g",
+            "next": "core_q2_empirical",
+            "feedback": "Excellent! Total sample mass = 23 + 27 + 114 = 164 g. Mass % Na = 23 / 164 = 14.02%. In 196 g sample: 196 * 0.1402 = 27.5 g Na."
+          },
+          {
+            "text": "23.0 g",
+            "next": "review_moles_empirical",
+            "feedback": "Incorrect. The original sample was 164 g total. In a larger 196 g sample, the mass of sodium increases proportionally."
+          },
+          {
+            "text": "8.52 g",
+            "next": "review_moles_empirical",
+            "feedback": "Incorrect. Calculate the mass fraction of sodium (23.0 / 164.0) first, then multiply by the new sample mass (196 g)."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "review_limiting_reagent",
+        "prompt": "Guided Review: Limiting Reactant Method",
+        "body": "To identify the limiting reactant:\n1. Calculate moles of each reactant available.\n2. Divide moles by the coefficient in the balanced equation.\n3. The smallest ratio identifies the limiting reactant!\n\nPractice Question: For the reaction 2 Ca3(PO4)2 + 6 SiO2 + 10 C -> 6 CaSiO3 + P4 + 10 CO, if you start with 11.0 mol Ca3(PO4)2, 28.2 mol SiO2, and 55.0 mol C, which is limiting?",
+        "choices": [
+          {
+            "text": "SiO2",
+            "next": "fast_track_q2",
+            "feedback": "Correct! Stoichiometric ratios: Ca3(PO4)2 = 11.0/2 = 5.50; SiO2 = 28.2/6 = 4.70; C = 55.0/10 = 5.50. SiO2 yields the fewest reaction runs (4.70), so it is limiting."
+          },
+          {
+            "text": "Ca3(PO4)2",
+            "next": "review_limiting_reagent",
+            "feedback": "Incorrect. Ca3(PO4)2 has fewer initial moles, but its coefficient is only 2 (11.0/2 = 5.5 runs), whereas SiO2 (28.2/6 = 4.7 runs) runs out first."
+          },
+          {
+            "text": "C",
+            "next": "review_limiting_reagent",
+            "feedback": "Incorrect. Although C has a coefficient of 10, 55.0 moles allows 5.5 runs, which is more than SiO2 allows (4.7 runs)."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "review_solution_stoich",
+        "prompt": "Guided Review: Reaction Types & Net Precipitation",
+        "body": "Let's review chemical reaction classification.\n\n- **Precipitation**: Insoluble solid forms from aqueous ions.\n- **Oxidation-Reduction**: Transfer of electrons (change in oxidation state).\n- **Acid-Base**: Proton (H+) transfer.\n\nPractice Question: What type of reaction is ZnBr2(aq) + 2 AgNO3(aq) -> Zn(NO3)2(aq) + 2 AgBr(s)?",
+        "choices": [
+          {
+            "text": "Precipitation reaction",
+            "next": "core_q3_titration",
+            "feedback": "Correct! Ag+ and Br- combine to form insoluble AgBr solid precipitate while oxidation numbers remain unchanged."
+          },
+          {
+            "text": "Oxidation-reduction reaction",
+            "next": "review_solution_stoich",
+            "feedback": "Incorrect. Check oxidation states: Zn remains +2, Ag remains +1, Br remains -1, N remains +5, O remains -2. No electron transfer occurs."
+          },
+          {
+            "text": "Acid-base reaction",
+            "next": "review_solution_stoich",
+            "feedback": "Incorrect. No protons (H+) are transferred in this double displacement salt reaction."
+          }
+        ]
+      },
+      {
+        "type": "scene",
+        "id": "review_advanced_stoich",
+        "prompt": "Guided Review: Mass Loss Walkthrough",
+        "body": "Here is the step-by-step breakdown for M2S3 heating:\n\n1. Reaction: M2S3 + 3.5 O2 -> 2 MO2 + 3 SO2\n2. Net molar mass difference = 3 mol S lost (3 * 32.06 g) minus 4 mol O gained (4 * 16.00 g) = 32.18 g decrease per mol M2S3.\n3. Moles M2S3 in sample = 0.81 g decrease / 32.18 g/mol = 0.02517 mol.\n4. Molar mass of M2S3 = 5.23 g / 0.02517 mol = 207.8 g/mol.\n5. Solve for atomic mass of M: 2M + 96.18 = 207.8 -> 2M = 111.6 -> M = 55.9 g/mol (Manganese).",
+        "choices": [
+          {
+            "text": "I understand the walkthrough! Retest the core titration problem.",
+            "next": "core_q3_titration",
+            "feedback": "Great work working through the math! Let's finish up the core review."
+          },
+          {
+            "text": "Let me re-try the Fast-Track mass loss challenge.",
+            "next": "fast_track_q3",
+            "feedback": "Ready for another shot! Let's solve the fast-track challenge."
+          },
+          {
+            "text": "Wrap up my guided review session here.",
+            "next": "ending_guided_complete",
+            "feedback": "Wrapping up your practice session."
+          }
+        ]
+      },
+      {
+        "type": "ending",
+        "id": "ending_mastery",
+        "prompt": "Exam Ready: Chemistry 1A Mastery",
+        "body": "Congratulations! You successfully completed the fast-track exam challenge. You demonstrated strong mastery across molarity, stoichiometry, limiting reactants, solution precipitation, and advanced mass-balance calculations. You are in excellent shape for Exam 1!",
+        "rating": "Best outcome"
+      },
+      {
+        "type": "ending",
+        "id": "ending_solid_foundation",
+        "prompt": "Solid Foundation: Core Concepts Mastered",
+        "body": "Great job! You navigated all core exam concepts including dilution equations, empirical formulas, and titration stoichiometry. Review your PDF summary for any notes or formulas before test day!",
+        "rating": "Best outcome"
+      },
+      {
+        "type": "ending",
+        "id": "ending_guided_complete",
+        "prompt": "Guided Practice Complete: Foundations Strengthened",
+        "body": "Great effort! You completed a thorough review of fundamental chemistry problem-solving, including molarity, mass percentages, limiting reagents, and reaction classification. Make sure to download your PDF summary to keep for your study guide!",
+        "rating": "Mixed outcome"
+      }
+    ]
+  }
+}
